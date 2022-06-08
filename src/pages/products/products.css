@@ -1,0 +1,69 @@
+@import "../../utility/styles.css";
+
+.products {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 19rem));
+  justify-content: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+.product {
+  height: 30rem;
+  margin: 2rem 1rem;
+}
+.banner {
+  height: 60%;
+  width: 100%;
+  margin: 0;
+}
+.brand {
+  color: var(--grey);
+  text-align: start;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0.5rem;
+}
+.name {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0.5rem;
+}
+.price,
+.mrp {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0.5rem;
+}
+.mrp {
+  text-decoration: line-through;
+  color: var(--grey);
+}
+.discount {
+  color: var(--price);
+}
+.assured {
+  width: 75px;
+  height: auto;
+  object-fit: contain;
+  margin: 1rem 0.5rem 0;
+}
+.sizes {
+  color: var(--grey);
+  font-size: 1rem;
+  margin: 1rem 0.5rem;
+}
+.btn {
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+.btn--save {
+  background-color: var(--yellow);
+}
+.btn--add {
+  background-color: var(--orange);
+  color: var(--white);
+}
