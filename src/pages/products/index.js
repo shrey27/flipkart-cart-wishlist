@@ -1,10 +1,13 @@
 import "./products.css";
 import dataSet from "../../utility/data.json";
 import { useCart } from "../../context/cartContext";
+import { useNavigate } from "react-router";
+import Empty from "../../components/Empty";
 
 function ProductCard(props) {
   const { id, image, name, brand, price, mrp } = props;
   const { state, dispatch } = useCart();
+  const navigate = useNavigate();
 
   const handleAddToCart = () => {
     const index = state.cart.find((item) => item.id === id);
@@ -19,6 +22,8 @@ function ProductCard(props) {
         quantity: 1,
       };
       dispatch({ type: "ADD_TO_CART", payload });
+    } else {
+      navigate("/cart");
     }
   };
 
@@ -34,6 +39,8 @@ function ProductCard(props) {
         mrp,
       };
       dispatch({ type: "ADD_TO_WISHLIST", payload });
+    } else {
+      navigate("/wishlist");
     }
   };
 
@@ -54,11 +61,15 @@ function ProductCard(props) {
       />
       <h2 className="sizes">Size: S, M, L, XL, XXL</h2>
       <button className="btn btn--save" onClick={handleAddToWishlist}>
-        Save for Later
+        {state?.wishlist?.findIndex((item) => item.id === id) !== -1
+          ? "Go To Wishlist"
+          : "Save for Later"}
       </button>
       <button className="btn btn--add" onClick={handleAddToCart}>
         <i className="fa-solid fa-cart-arrow-down"></i>
-        Add to Cart
+        {state?.cart?.findIndex((item) => item.id === id) !== -1
+          ? "Go To Cart"
+          : "Add to Cart"}
       </button>
     </div>
   );
@@ -67,9 +78,15 @@ function ProductCard(props) {
 export default function Products() {
   return (
     <div className="products">
-      {dataSet["products"].map((item) => {
-        return <ProductCard key={item.id} {...item} />;
-      })}
+      {dataSet["products"].length ? (
+        <>
+          {dataSet["products"].map((item) => {
+            return <ProductCard key={item.id} {...item} />;
+          })}
+        </>
+      ) : (
+        <Empty />
+      )}
     </div>
   );
 }

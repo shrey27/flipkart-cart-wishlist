@@ -1,10 +1,13 @@
 import "./cart.css";
 import { useCart } from "../../context/cartContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import Empty from "../../components/Empty";
 
 function CartItem({ productDetails }) {
   const { state, dispatch } = useCart();
   let { id, image, brand, name, price, mrp, quantity } = productDetails;
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     let temp = {
@@ -63,6 +66,8 @@ function CartItem({ productDetails }) {
       };
       dispatch({ type: "ADD_TO_WISHLIST", payload });
       handleDelete();
+    } else {
+      navigate("/wishlist");
     }
   };
 
@@ -94,7 +99,9 @@ function CartItem({ productDetails }) {
           +
         </button>
         <button className="btn btn--save" onClick={handleWishlist}>
-          Save for Later
+          {state?.wishlist?.findIndex((item) => item.id === id) !== -1
+            ? "Go To Wishlist"
+            : "Save for Later"}
         </button>
         <button className="btn btn--delete" onClick={handleDelete}>
           <i className="fa-solid fa-trash"></i>Remove Item
@@ -113,34 +120,40 @@ export default function Cart() {
   }, [state]);
 
   return (
-    <div className="cart">
-      {/* Cart Items with details and buttons */}
-      <div className="cart--listing">
-        {cartItems.map((item) => {
-          return <CartItem key={item.id} productDetails={{ ...item }} />;
-        })}
-      </div>
+    <>
+      {cartItems.length ? (
+        <div className="cart">
+          {/* Cart Items with details and buttons */}
+          <div className="cart--listing">
+            {cartItems.map((item) => {
+              return <CartItem key={item.id} productDetails={{ ...item }} />;
+            })}
+          </div>
 
-      {/* Cart Pricing Details */}
-      <div className="cart--pricing">
-        <h2>Price Details</h2>
-        <hr />
-        <h1>
-          Price <span className="fl-rt">Rs. {state.price}</span>
-        </h1>
-        <h1>
-          Discount <span className="fl-rt">50%</span>
-        </h1>
-        <h1>
-          Delivery <span className="fl-rt">Rs. 100</span>
-        </h1>
-        <hr />
-        <h1>
-          Total <span className="fl-rt">Rs. {state.total}</span>
-        </h1>
-        <button className="btn btn--add">Place Order</button>
-      </div>
-      <div className="amount"></div>
-    </div>
+          {/* Cart Pricing Details */}
+          <div className="cart--pricing">
+            <h2>Price Details</h2>
+            <hr />
+            <h1>
+              Price <span className="fl-rt">Rs. {state.price}</span>
+            </h1>
+            <h1>
+              Discount <span className="fl-rt">50%</span>
+            </h1>
+            <h1>
+              Delivery <span className="fl-rt">Rs. 100</span>
+            </h1>
+            <hr />
+            <h1>
+              Total <span className="fl-rt">Rs. {state.total}</span>
+            </h1>
+            <button className="btn btn--add">Place Order</button>
+          </div>
+          <div className="amount"></div>
+        </div>
+      ) : (
+        <Empty />
+      )}
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import "./wishlist.css";
 import { useCart } from "../../context/cartContext";
-
+import Empty from "../../components/Empty";
 function ProductCard(props) {
   const { id, image, name, brand, price, mrp } = props;
   const { state, dispatch } = useCart();
@@ -56,9 +56,15 @@ export default function Wishlist() {
   const { state } = useCart();
   return (
     <div className="products">
-      {state?.wishlist?.map((item) => {
-        return <ProductCard key={item.id} {...item} />;
-      })}
+      {state.wishlist.length ? (
+        <>
+          {state?.wishlist?.map((item) => {
+            return <ProductCard key={item.id} {...item} />;
+          })}
+        </>
+      ) : (
+        <Empty />
+      )}
     </div>
   );
 }

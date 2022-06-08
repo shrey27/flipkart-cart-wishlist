@@ -10,3 +10,10 @@
   color: var(--white);
   font-size: 1.5rem;
 }
+.empty {
+  display: block;
+  width: 15rem;
+  height: auto;
+  object-fit: contain;
+  margin: 3rem auto;
+}
